@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="dasi.web.mapper.CommunityMapper">
+	
+	<!-- 검색 기능 -->
+	<sql id="criteria">
+		<if test="searchType=='T'.toString()"> 
+			WHERE communityTitle 
+			LIKE CONCAT('%', #{keyWord}, '%')
+		</if>
+		<if test="searchType=='C'.toString()">
+			WHERE communityCategory 
+			LIKE CONCAT('%', #{keyWord}, '%')
+		</if>
+		<if test="searchType=='TC'.toString()">
+			WHERE communityTitle  
+			LIKE CONCAT('%', #{keyWord}, '%') 
+			OR communityCategory 
+			LIKE CONCAT('%', #{keyWord}, '%') 
+		</if>
+	</sql>
+
+	<!-- 글쓰기 -->
+	<insert id="communityInsert" parameterType="communityDTO">
+		INSERT 
+		INTO community(communityTitle
+					 , communityCategory
+					 , communityContents
+					 , communityImage
+					 , communityWriter
+					 , communityPw
+					 )
+			 VALUES(#{communityTitle}
+				  , #{communityCategory}
+				  , #{communityContents}
+				  , #{communityImage}
+				  , #{communityWriter}
+				  , #{communityPw}
+				  )
+	</insert>
+	
+	<!-- 커뮤니티 리스트 -->
+	<select id="communitySelect" resultType="communityDTO">
+		SELECT * 
+		FROM community
+		<include refid="criteria"></include> 
+		ORDER BY communityCategory = '공지사항' DESC
+		LIMIT #{startIndex}, #{cntPerPage}
+	</select>
+	
+	<!-- 리스트 전체 수 -->	
+	<select id="totalCnt" resultType="Integer">
+		SELECT count(*) total
+		FROM community
+		<include refid="criteria"></include>
+	</select>
+	
+	<!-- 글 상세보기 -->
+	<select id="communityView" resultType="communityDTO">
+		SELECT *
+		FROM community
+		WHERE communityNo = #{communityNo}
+	</select>
+	
+	<!-- 글 수정하기 -->
+	<update id="communityUpdate" parameterType="communityDTO">
+		UPDATE community
+		SET communityImage = #{communityImage}
+		  , communityTitle = #{communityTitle}
+		  , communityCategory = #{communityCategory}
+		  , communityWriter = #{communityWriter}
+		  , communityPw = #{communityPw}
+		  , communityContents = #{communityContents}
+		WHERE communityNo = #{communityNo}
+	</update>
+	
+	<!-- 글 삭제하기 -->
+	<delete id="communityDelete" parameterType="Integer">
+		DELETE 
+		FROM community
+		WHERE communityNo = #{communityNo}
+	</delete>
+	
+	<!-- 글 비밀번호 확인 -->
+	<select id="communityPwChk" resultType="communityDTO">
+		SELECT *
+		FROM community 
+		WHERE communityWriter = #{communityWriter}
+		AND communityPw = #{communityPw}
+	</select>
+</mapper>

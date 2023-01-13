@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+  	<typeAlias type="dasi.web.domain.MemberDTO" alias="memberDTO"/>
+  	<typeAlias type="dasi.web.domain.CommunityDTO" alias="communityDTO"/>
+  	<typeAlias type="dasi.web.domain.ReplyDTO" alias="replyDTO"/>
+  	<typeAlias type="dasi.web.domain.AdminDTO" alias="adminDTO"/>
+  	<typeAlias type="dasi.web.domain.ShopDTO" alias="shopDTO"/>
+  	<typeAlias type="dasi.web.domain.TrashDTO" alias="trashDTO"/>
+  	<typeAlias type="dasi.web.domain.PageDTO" alias="pageDTO"/>
+  </typeAliases>
+</configuration>

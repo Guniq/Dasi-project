@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="dasi.web.mapper.TrashMapper">
+	
+	<!-- 검색 기능 -->
+	<sql id="criteria">
+		<if test="searchType=='N'.toString()"> 
+			WHERE trashName 
+			LIKE CONCAT('%', #{keyWord}, '%')
+		</if>
+		<if test="searchType=='C'.toString()">
+			WHERE trashCategory  
+			LIKE CONCAT('%', #{keyWord}, '%')
+		</if>
+		<if test="searchType=='NC'.toString()">
+			WHERE trashName  
+			LIKE CONCAT('%', #{keyWord}, '%') 
+			OR trashCategory 
+			LIKE CONCAT('%', #{keyWord}, '%') 
+		</if>
+	</sql>
+
+	<!-- 쓰레기 등록 -->
+	<insert id="trashInsert" parameterType="TrashDTO">
+		INSERT 
+		INTO trash(trashName
+				, trashCategory
+				, trashImage
+				, trashContents
+				)
+		 VALUES(#{trashName}
+			  , #{trashCategory}
+			  , #{trashImage}
+			  , #{trashContents}
+			  )
+	</insert>
+	
+	<!-- 쓰레기 리스트 -->
+	<select id="trashList" resultType="trashDTO">
+		SELECT * 
+		FROM trash
+		<include refid="criteria"></include> 
+		ORDER BY trashNo DESC 
+		LIMIT #{startIndex}, #{cntPerPage}
+	</select>
+	
+	<!-- 전체 수 -->	
+	<select id="totalCnt" resultType="Integer">
+		SELECT count(*) total
+		FROM trash
+		<include refid="criteria"></include>
+	</select>
+	
+	<!-- 쓰레기 상세보기 -->
+	<select id="trashView" resultType="trashDTO">
+		SELECT *
+		FROM trash
+		WHERE trashNo = #{trashNo}
+	</select>
+	
+	<!-- 쓰레기 수정하기 -->
+	<update id="trashUpdate">
+		UPDATE trash
+		SET trashName = #{trashName}
+		  , trashCategory = #{trashCategory}
+		  , trashImage = #{trashImage}
+		  , trashContents = #{trashContents}
+		WHERE trashNo = #{trashNo}
+	</update>
+	
+	<!-- 쓰레기 삭제하기 -->
+	<delete id="trashDelete">
+		DELETE 
+		FROM trash
+		WHERE trashNo = #{trashNo}
+	</delete>
+	
+	<!-- 쓰레기 조회수 -->
+	<update id="hitAdd" parameterType="Integer">
+		UPDATE trash
+		SET trashHit = trashHit+1
+		WHERE trashNo = #{trashNo}
+	</update>
+	
+	<!-- 쓰레기 조회수 순 리스트 -->
+	<select id="trashHitList" resultType="trashDTO">
+		SELECT *
+		FROM trash
+		WHERE trashHit > 5
+	</select>
+</mapper>

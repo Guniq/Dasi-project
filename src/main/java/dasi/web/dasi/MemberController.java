@@ -111,7 +111,7 @@ public class MemberController {
 		
 		int flag = memberService.memberIdChk(memberId);
 		
-		if(flag > 1) result = "Y";
+		if(flag >= 1) result = "Y";
 		// 아이디가 있을 시 Y 없을 시 N
 		
 		return result;

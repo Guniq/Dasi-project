@@ -29,7 +29,7 @@
 			if(memberId != ''){
 				$.ajax({
 					type: 'post',
-					url: "${ctx}/memberIdChk.do",
+					url: "/dasi/memberIdChk.do",
 					data: {"memberId":memberId},
 					success: function(data){
 						if(data == "N"){
@@ -62,7 +62,7 @@
 			if(memberName != ''){
 				$.ajax({
 					type: 'post',
-					url: "${ctx}/memberNameChk.do",
+					url: "/dasi/memberNameChk.do",
 					data: {"memberName":memberName},
 					success: function(data){
 						if(data == "N"){
@@ -186,7 +186,7 @@
 			if(communityPw != ''){
 				$.ajax({
 					type: 'post',
-					url: "${ctx}/communityPwChk.do",
+					url: "/dasi/communityPwChk.do",
 					data: {"communityWriter":communityWriter, "communityPw":communityPw},
 					success: function(data){
 						
@@ -224,7 +224,7 @@
 			if(communityPw2 != ''){
 				$.ajax({
 					type: 'post',
-					url: "${ctx}/communityPwChk.do",
+					url: "/dasi/communityPwChk.do",
 					data: {"communityWriter":communityWriter2, "communityPw":communityPw2},
 					success: function(data){
 						if(data == "Y"){
